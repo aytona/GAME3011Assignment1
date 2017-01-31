@@ -6,8 +6,6 @@ namespace Materials {
         public Material m_Texture;
         public Vector2 m_Direction;
 
-        private Renderer m_Renderer;
-
         // TODO: Make a class that does this so other scripts can use it in the future
         private static ScrollingTexture m_Instance;
 
@@ -20,10 +18,6 @@ namespace Materials {
         }
         // Note: How does the user know which script will get deleted (From testing it seems like it goes bottom->up from the hierarchy)
         // End of TODO
-
-        void Start() {
-            m_Renderer = GetComponent<Renderer>();
-        }
 
         void Update() {
             OffsetTexture();

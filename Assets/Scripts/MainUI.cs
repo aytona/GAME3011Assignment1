@@ -18,7 +18,6 @@ public class MainUI : MonoBehaviour {
     }
 
     public void SwitchCanvas(Canvas _target) {
-        //_target.gameObject.SetActive(true);
         for (int i = 0; i < m_Canvases.Count; ++i) {
             if (m_Canvases[i] == _target) {
                 m_Canvases[i].gameObject.SetActive(true);
