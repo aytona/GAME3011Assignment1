@@ -6,23 +6,15 @@ namespace Gameplay {
         public int ySize;
         public int ResourceMinRange;
         public int ResourceMaxRange;
+        public int[,] grid;
 
-        private int[,] grid;
         private int MaxResources;
 
-        void Start() {
+        void Awake() {
             // Initialize the grid
             grid = new int[xSize, ySize];
             ClearGrid();
             GenerateGrid();
-        }
-
-        // Gets the generated grid
-        public int[,] GetGrid() {
-            if (grid == null) {
-                GenerateGrid();
-            }
-            return grid;
         }
 
         // Generates the grid
