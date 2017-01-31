@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 namespace Gameplay {
@@ -23,12 +22,12 @@ namespace Gameplay {
 
         private GridGenerator m_GridGenerator;
         private GameObject[,] m_CurrentGrid;
-        private List<GameObject> m_Minables;
+        private GameObject[,] m_ScanGrid;
 
         void Start() {
-            m_Minables = new List<GameObject>();
             m_GridGenerator = GetComponent<GridGenerator>();
             m_CurrentGrid = new GameObject[m_GridGenerator.xSize, m_GridGenerator.ySize];
+            m_ScanGrid = new GameObject[m_GridGenerator.xSize, m_GridGenerator.ySize];
             InitializeGrid();
         }
 
@@ -53,6 +52,7 @@ namespace Gameplay {
             tile.layer = 9;
             tile.tag = "Scannable";
             tile.GetComponent<SpriteRenderer>().sortingLayerName = "Foreground";
+            m_ScanGrid[x, y] = tile;
         }
 
         // Instantiates the generate tileset (Minable tiles)
@@ -78,6 +78,7 @@ namespace Gameplay {
             m_CurrentGrid[x, y] = tile;
         }
 
+        // Sets the sprites of the tiles depending on distance away from the max resource and other resources around it
         private void SetMinableSprites() {
             // There might be an easier way to do this, but I'm drawing a blank at the moment
             // Only 2 hours left until deadline
