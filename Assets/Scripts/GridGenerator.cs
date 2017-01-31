@@ -2,7 +2,6 @@
 
 namespace Gameplay {
     public class GridGenerator : MonoBehaviour {
-
         public int xSize;
         public int ySize;
         public int ResourceMinRange;
@@ -15,6 +14,19 @@ namespace Gameplay {
             // Initialize the grid
             grid = new int[xSize, ySize];
             ClearGrid();
+            GenerateGrid();
+        }
+
+        // Gets the generated grid
+        public int[,] GetGrid() {
+            if (grid == null) {
+                GenerateGrid();
+            }
+            return grid;
+        }
+
+        // Generates the grid
+        public void GenerateGrid() {
             // Marks the location of where the max resource will be at
             MaxResources = Random.Range(ResourceMinRange, ResourceMaxRange);
             for (int x = 0; x < MaxResources; ++x) {
@@ -39,7 +51,9 @@ namespace Gameplay {
                     if (x == 0 && y == 0) {
                         // Do nothing
                     }
+                    // Bound checks
                     else if((StartingX + x >= 0 && StartingY + y >= 0) && (StartingX + x < xSize && StartingY + y < ySize)) {
+                        // Clamp the max value of a tile to be at 3 (which is pre-deterimed before this function)
                         if (grid[StartingX + x, StartingY + y] + 1 < 3) {
                             grid[StartingX + x, StartingY + y]++;
                         }

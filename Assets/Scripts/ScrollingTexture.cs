@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Materials {
     public class ScrollingTexture : MonoBehaviour {
