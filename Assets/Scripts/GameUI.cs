@@ -1,27 +1,44 @@
 ﻿using UnityEngine;
-using Gameplay;
+using UnityEngine.UI;
+using Info;
 
 namespace UI {
     public class GameUI : MonoBehaviour {
         public GameObject m_GameManager;
+        public Text m_Scans;
+        public Text m_Extracts;
+        public Text m_Score;
+        public Text m_CurrentMode;
+        public bool b_ScanMode;
+        public bool b_MineMode;
 
-        private MineArea m_MineArea;
-        private ScanArea m_ScanArea;
+        private StatKeeper m_Stat;
 
         void Start() {
-            m_MineArea = m_GameManager.GetComponent<MineArea>();
-            m_ScanArea = m_GameManager.GetComponent<ScanArea>();
-            m_MineArea.enabled = false;
+            m_Stat = m_GameManager.GetComponent<StatKeeper>();
+            ScanMode();
+        }
+
+        void Update() {
+            m_Scans.text = "Scans: " + m_Stat.m_StartingScanAmount.ToString();
+            m_Extracts.text = "Extractions: " + m_Stat.m_StartingExtractionAmount.ToString();
+            m_Score.text = "Score: " + m_Stat.m_CurrentScore.ToString();
+            if (b_MineMode) {
+                m_CurrentMode.text = "Extraction Mode";
+            }
+            if (b_ScanMode) {
+                m_CurrentMode.text = "Scanning Mode";
+            }
         }
 
         public void ScanMode() {
-            m_MineArea.enabled = false;
-            m_ScanArea.enabled = true;
+            b_MineMode = false;
+            b_ScanMode = true;
         }
 
         public void MineMode() {
-            m_MineArea.enabled = true;
-            m_ScanArea.enabled = false;
+            b_MineMode = true;
+            b_ScanMode = false;
         }
 
         public void Quit() {

@@ -14,15 +14,20 @@ namespace Gameplay {
         public TileSets[] m_Tiles;
         public Sprite m_DefaultTile;
 
+        // Just to keep the hierarchy cleaner
+        public GameObject m_BGParent;
+        public GameObject m_FGParent;
+
         // TODO: Just get sprite size and calculate offset
         public float StartX;
         public float StartY;
         public float XOffset;
         public float YOffset;
 
+        public GameObject[,] m_CurrentGrid;     // Minable Grid
+        public GameObject[,] m_ScanGrid;        // Scannable Grid
+
         private GridGenerator m_GridGenerator;
-        private GameObject[,] m_CurrentGrid;
-        private GameObject[,] m_ScanGrid;
 
         void Start() {
             m_GridGenerator = GetComponent<GridGenerator>();
@@ -52,6 +57,11 @@ namespace Gameplay {
             tile.layer = 9;
             tile.tag = "Scannable";
             tile.GetComponent<SpriteRenderer>().sortingLayerName = "Foreground";
+            tile.AddComponent<BoxCollider2D>();
+            tile.GetComponent<BoxCollider2D>().isTrigger = true;
+            tile.transform.parent = m_FGParent.transform;
+            tile.AddComponent<ScanArea>();
+            tile.GetComponent<ScanArea>().SetPos(x, y);
             m_ScanGrid[x, y] = tile;
         }
 
@@ -64,6 +74,7 @@ namespace Gameplay {
             tile.layer = 10;
             tile.tag = "Minable";
             tile.GetComponent<SpriteRenderer>().sortingLayerName = "Underground";
+            tile.transform.parent = m_BGParent.transform;
             if (m_GridGenerator.grid[x, y] == 3) {
                 int rand = UnityEngine.Random.Range(0, m_Tiles.Length - 1);
                 tile.name = m_Tiles[rand].m_TileName;
@@ -75,6 +86,14 @@ namespace Gameplay {
             } else {
                 tile.name = "Unknown";
             }
+            tile.AddComponent<BoxCollider2D>();
+            tile.GetComponent<BoxCollider2D>().isTrigger = true;
+            // Just to make sure they are uniform like the foreground
+            tile.GetComponent<BoxCollider2D>().size = new Vector2(1.28f, 1.28f);
+            tile.AddComponent<Rigidbody2D>();
+            tile.GetComponent<Rigidbody2D>().isKinematic = true;
+            tile.AddComponent<MineArea>();
+            tile.GetComponent<MineArea>().SetPos(x, y);
             m_CurrentGrid[x, y] = tile;
         }
 
